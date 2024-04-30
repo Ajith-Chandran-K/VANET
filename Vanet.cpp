@@ -144,16 +144,9 @@ void LocalRepairTimer::handle(Event* p) {
     aodv_rt_entry *rt;
     struct hdr_ip *ih = HDR_IP((Packet *)p);
 
-    /* you get here after the timeout in a local repair attempt */
-    /* fprintf(stderr, "%s\n", __FUNCTION__); */
     rt = agent->rtable.rt_lookup(ih->daddr());
     if (rt && rt->rt_flags != RTF_UP) {
-        // route is yet to be repaired
-        // I will be conservative and bring down the route
-        // and send route errors upstream.
-        /* The following assert fails, not sure why */
-        /* assert (rt->rt_flags == RTF_IN_REPAIR); */
-
+       
         //rt->rt_seqno++;
         agent->rt_down(rt);
         // send RERR
